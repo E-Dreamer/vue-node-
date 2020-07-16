@@ -5,13 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "node": "nodemon server/index"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "express-session": "^1.17.1",
+    "less": "^3.12.0",
+    "less-loader": "^6.2.0",
+    "mysql": "^2.18.1",
+    "nprogress": "^0.2.0",
+    "qs": "^6.9.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.0",

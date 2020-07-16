@@ -1,27 +1,30 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
-Vue.use(VueRouter)
-
-const routes = [
-  {
+// 这是单独的页面 并且不需要权限
+const Nojurisdication = [{
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/login'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'login',
+    meta: {
+      requiresAuth: false,
+    },
+    component: () => import('../views/login.vue')
   }
 ]
 
-const router = new VueRouter({
-  routes
-})
+//这是需要权限的页面 且在菜单项中的页面
+const jurisdicationMenu = [{
 
-export default router
+}]
+
+//这是需要权限 不在菜单中的页面
+const Nomenu=[{
+
+}]
+
+export const routes = [
+  ...Nojurisdication,
+  // ...jurisdicationMenu
+]

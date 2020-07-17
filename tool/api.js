@@ -6,5 +6,6 @@
 
 export default {
     login:'/login',
-    adduser:'/adduser'
+    adduser:'/adduser',
+    userlist:'/userlist'
 }

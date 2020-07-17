@@ -322,7 +322,7 @@ input {
           </label>
           <label>
             <span>密码</span>
-            <input type="password" v-model="signpassword" @keydown.enter='register'/>
+            <input type="password" v-model="signpassword" @keydown.enter="register" />
           </label>
           <button type="button" class="submit" @click="register">注 册</button>
           <button type="button" class="fb-btn">
@@ -336,7 +336,7 @@ input {
 </template>
 
 <script>
-import md5 from 'md5'
+import md5 from "md5";
 export default {
   data() {
     return {
@@ -352,16 +352,23 @@ export default {
       document.querySelector(".dowebok").classList.toggle("s--signup");
     },
     login() {
-      let params = { userName: this.userName, passWord: md5(this.passWord)};
+      let params = { userName: this.userName, passWord: md5(this.passWord) };
       this.$ajax.post(this.$api.login, params).then(res => {
         console.log(res);
+        sessionStorage.setItem("token", res.token);
+        sessionStorage.setItem("username", this.userName);
+        if (res.success) {
+          this.$router.push("/home");
+        }
       });
     },
-    register(){
-      let params = {userName:this.signusername,passWord:md5(this.signpassword),email:this.signemail};
-      this.$ajax.post(this.$api.adduser,params).then(res=>{
-        
-      })
+    register() {
+      let params = {
+        userName: this.signusername,
+        passWord: md5(this.signpassword),
+        email: this.signemail
+      };
+      this.$ajax.post(this.$api.adduser, params).then(res => {});
     }
   },
   created() {},

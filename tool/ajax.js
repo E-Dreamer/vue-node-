@@ -33,16 +33,16 @@ axios.interceptors.request.use(config => {
 
 	}
   if (config.url == '/login') {
-		loadingInstance = Loading.service({ //加载loading
-			fullscreen: true,
-			text: '加载中...',
-			body: true,
-			background: 'rgba(0, 0, 0, 0.8)',
-		});
+		// loadingInstance = Loading.service({ //加载loading
+		// 	fullscreen: true,
+		// 	text: '加载中...',
+		// 	body: true,
+		// 	background: 'rgba(0, 0, 0, 0.8)',
+		// });
   }else {
-		loadingInstance = {};
-		//console.log('开启加载框',isloading)
-		store.commit("setLoading", isloading);
+		// loadingInstance = {};
+		// //console.log('开启加载框',isloading)
+		// store.commit("setLoading", isloading);
 	}
   if (config.url != "/login") {
 		if (process.env.NODE_ENV == 'development') {
@@ -56,7 +56,7 @@ axios.interceptors.request.use(config => {
 
 //响应拦截器
 axios.interceptors.response.use(response => {
-  console.log(response);
+//   console.log(response);
   return response.data
 })
 

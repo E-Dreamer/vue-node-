@@ -15,7 +15,6 @@ NProgress.configure({
   trickleSpeed: 200, // 自动递增间隔    
   minimum: 0.1 // 初始化时的最小百分比
 })
-
 Vue.config.productionTip = false;
 Vue.prototype.$ajax = ajax;
 Vue.prototype.$api = api;

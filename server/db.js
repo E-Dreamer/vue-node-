@@ -5,13 +5,13 @@ module.exports = {
     user: 'root',
     password: 'root',
     database: 'user',
-    port: 3306
+    port: 3306,
   },
   mysql1: {
     host: 'localhost',
     user: 'root',
     password: 'root',
     database: 'test',
-    port: 3306
+    port: 3306,
   }
 }

@@ -89,7 +89,10 @@ module.exports = {
     poolCluster.getConnection('mysql', (err, connection) => {
       if (err) console.log('数据库链接失败', err);
       let sql = sqlMap.userlist;
-      connection.query(sql, (err, result) => {
+      if (req.body.userName) {
+        sql += ' WHERE username =?'
+      }
+      connection.query(sql,req.body.userName, (err, result) => {
         if (err) {
           res.status(500);
           res.send({
@@ -105,6 +108,51 @@ module.exports = {
         })
       })
 
+    })
+  },
+  //同一数据库下 多条sql语句查询
+  someDBSelect(req, res, next) {
+    poolCluster.getConnection('mysql', (err, connection) => {
+      if (err) console.log('数据库链接失败');
+      let sql = 'SELECT * FROM admin_user,user'
+      connection.query(sql, (err, result) => {
+        if (err) {
+          res.status(500);
+          res.send({
+            msg: err.sqlMessage,
+            success: false
+          })
+        }
+        connection.release();
+        res.send({
+          msg: '查询成功',
+          success: true,
+          result: result
+        })
+      })
+    })
+  },
+
+  //不同数据库下 查询
+  noSomeDBSelect(req, res, next) {
+    poolCluster.getConnection((err, connection) => {
+      if (err) console.log('数据库链接失败');
+      let sql = 'SELECT * FROM user.article,test.post'
+      connection.query(sql, (err, result) => {
+        if (err) {
+          res.status(500);
+          res.send({
+            msg: err.sqlMessage,
+            success: false
+          })
+        }
+        connection.release();
+        res.send({
+          msg: '查询成功',
+          success: true,
+          result: result
+        })
+      })
     })
   }
 }

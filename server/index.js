@@ -22,7 +22,7 @@ app.all("*", function (req, res, next) {
   next();
 });
 
-//统一判断 接口 如果没有token 返回500
+//统一判断 除登录接口外的所有接口 如果没有token 返回500
 app.use(function (req, res, next) {
   let url = req.url;
   if(url.indexOf('?') !== -1){

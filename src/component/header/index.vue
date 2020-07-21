@@ -3,6 +3,7 @@
   width: 100%;
   padding: 0;
   height: 40px !important;
+  line-height: 40px;
   display: flex;
 }
 .logo {
@@ -34,6 +35,13 @@
 }
 .options {
   flex: 1;
+  text-align: right;
+}
+.icon {
+  display: inline-block;
+  margin-right: 20px;
+  color: white;
+  font-size: 20px;
 }
 .drop {
   float: right;
@@ -56,13 +64,31 @@
       <i class="el-icon-s-unfold" @click="openSlider" v-else></i>
     </div>
     <div class="options">
+      <div class="icon">
+        <el-dropdown class="drop" @command="dropdownclick">
+          <span class="el-dropdown-link">
+            <i class="el-icon-bell"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="(item,index) in belldrop"
+              :key="index"
+              :command="item"
+            >{{item.title}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
       <el-dropdown class="drop">
         <span class="el-dropdown-link">
           {{loginName}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="(item,index) in droparr" :key="index">{{item.title}}</el-dropdown-item>
+          <el-dropdown-item
+            v-for="(item,index) in droparr"
+            :key="index"
+            :command="item"
+          >{{item.title}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -75,7 +101,7 @@ export default {
   data() {
     return {
       background: "#545c64",
-      loginName:sessionStorage.getItem('username'),
+      loginName: sessionStorage.getItem("username"),
       droparr: [
         {
           title: "个人资料"
@@ -86,6 +112,12 @@ export default {
         {
           title: "退出登录"
         }
+      ],
+      belldrop: [
+        {
+          title: "消息通知",
+          path: "/msg"
+        }
       ]
     };
   },
@@ -95,6 +127,11 @@ export default {
     },
     openSlider() {
       this.$store.commit("setCollapse", false);
+    },
+    dropdownclick(value) {
+      if (value.path) {
+        this.$router.push(value.path);
+      }
     }
   },
   created() {},

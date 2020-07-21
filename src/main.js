@@ -20,9 +20,19 @@ Vue.prototype.$ajax = ajax;
 Vue.prototype.$api = api;
 Vue.prototype.$tool = tool;
 
-router.beforeEach((to,form,next)=>{
-  NProgress.start();
-  next();
+router.beforeEach((to, form, next) => {
+  if (!to.name) return router.push('/error')
+  if (!to.meta.requiresAuth) return next() // 不需要验证的直接走
+  let token = sessionStorage.getItem('token')
+  if (token) {
+    NProgress.start(); // 开启进度条
+    next()
+  } else {
+    next({
+      path: "/login"
+    })
+
+  }
 })
 
 router.afterEach(() => {
@@ -33,5 +43,14 @@ router.afterEach(() => {
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted() {
+    let width = window.document.body.offsetWidth //window.screen.width
+    this.$store.commit('ScreenWidth', width);
+    var that = this
+    window.onresize = function(){
+      let width = window.document.body.offsetWidth 
+      that.$store.commit('ScreenWidth', width);
+    }
+  }
 }).$mount('#app')

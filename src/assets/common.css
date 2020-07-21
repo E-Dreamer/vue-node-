@@ -40,3 +40,14 @@ button {
     background-color: #73b0efb0;
 }
 
+.c_div {
+    background-color: white;
+    height:100%;
+    text-align: left;
+    /* padding:10px; */
+}
+
+.c_flex {
+    display: flex;
+    flex-direction: column;
+}

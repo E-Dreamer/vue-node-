@@ -34,8 +34,7 @@
     <el-menu
       :default-active="active"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
+      @select="handleSelect"
       :collapse="$store.state.isCollapse"
       background-color="#545c64"
       text-color="#fff"
@@ -81,11 +80,34 @@ export default {
       menuData: menuData
     };
   },
-  methods: {
-    handleOpen() {},
-    handleClose() {}
+  watch: {
+    menuData: {
+      handle(newv, oldv) {
+        console.log(newv,oldv, "进来");
+      }
+    }
   },
-  created() {},
+  methods: {
+    handleSelect(key, keyPath) {
+      this.showselect(this.menuData, key);
+    },
+    showselect(menu, key) {
+      menu.forEach(item => {
+        if (item.id == key) {
+          this.active = item.id;
+          this.toRouter(item.path);
+        } else if (item.children.length > 0) {
+          this.showselect(item.children, key);
+        }
+      });
+    },
+    toRouter(path) {
+      this.$router.push(path);
+    }
+  },
+  created() {
+    this.$store.commit("setMenu", menuData);
+  },
   mounted() {}
 };
 </script>

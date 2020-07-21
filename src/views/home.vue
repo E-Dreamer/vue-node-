@@ -8,6 +8,9 @@
   display: flex;
   height: calc(100vh - 40px) !important;
 }
+.main {
+  padding:0!important;
+}
 </style>
 
 <template>
@@ -16,7 +19,9 @@
     <div class="content">
       <cSlider></cSlider>
       <el-main class="main">
-        <router-view></router-view>
+        <keep-alive :include="keep">
+          <router-view :key="$route.name"></router-view>
+        </keep-alive>
       </el-main>
     </div>
   </div>
@@ -30,12 +35,20 @@ export default {
   data() {
     return {};
   },
-  methods: {},
-  created() {
-    this.$ajax.get(this.$api.userlist).then(res=>{
-      console.log(res);
-    })
+  computed: {
+    keep() {
+      return this.$store.state.keepRouters;
+    }
   },
+  watch: {
+    $route: {
+      handler(to, from) {
+        this.$store.commit("setkeep", to.name);
+      }
+    },
+  },
+  methods: {},
+  created() {},
   mounted() {}
 };
 </script>

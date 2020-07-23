@@ -62,6 +62,20 @@ module.exports = {
       })
     })
   },
+  outlogin(req, res, next) {
+    let url = req.url;
+    if (url.indexOf('?') !== -1) {
+      url = url.substr(0, url.indexOf('?'))
+    }
+    let token = req.query.sysHttpTokenId || req.body.sysHttpTokenId || req.headers.sysHttpTokenId;
+    jwt.verify(token, 'azrael', (err, decode) => {
+      decode.username = undefined
+    })
+    res.send({
+      success: true,
+      msg: '退出登录成功'
+    })
+  },
   //注册
   adduser(req, res, next) {
     poolCluster.getConnection('mysql', (err, connection) => {
@@ -92,7 +106,7 @@ module.exports = {
       if (req.body.userName) {
         sql += ' WHERE username =?'
       }
-      connection.query(sql,req.body.userName, (err, result) => {
+      connection.query(sql, req.body.userName, (err, result) => {
         if (err) {
           res.status(500);
           res.send({
@@ -108,6 +122,28 @@ module.exports = {
         })
       })
 
+    })
+  },
+  // 删除用户
+  delectUser(req, res, next) {
+    poolCluster.getConnection('mysql', (err, connection) => {
+      if (err) console.log('数据库链接失败', err);
+      let sql = sqlMap.delectUser;
+      console.log(req.query.id);
+      connection.query(sql, req.query.id, (err, result) => {
+        if (err) {
+          res.status(500);
+          res.send({
+            msg: err.sqlMessage,
+            success: false
+          })
+        }
+        connection.release();
+        res.send({
+          msg: '删除成功',
+          success: true
+        })
+      })
     })
   },
   //同一数据库下 多条sql语句查询
@@ -138,7 +174,7 @@ module.exports = {
     poolCluster.getConnection((err, connection) => {
       if (err) console.log('数据库链接失败');
       let sql = 'SELECT * FROM user.article,test.post'
-      connection.query(sql, (err, result) => {
+      connection.query(sql, (err, allresult) => {
         if (err) {
           res.status(500);
           res.send({
@@ -146,13 +182,30 @@ module.exports = {
             success: false
           })
         }
-        connection.release();
-        res.send({
-          msg: '查询成功',
-          success: true,
-          result: result
+        let pageNo = req.body.pageNo;
+        let pageSize = req.body.pageSize
+        if (pageNo && pageSize) {
+          sql += ' LIMIT ?,?'
+        }
+        let page = (pageNo - 1) * pageSize;
+        connection.query(sql, [parseInt(page), parseInt(pageSize)], (err, result) => {
+          if (err) {
+            res.status(500);
+            res.send({
+              msg: err.sqlMessage,
+              success: false
+            })
+          }
+          connection.release();
+          res.send({
+            msg: '查询成功',
+            success: true,
+            result: result,
+            totalCount: allresult.length
+          })
         })
       })
+
     })
   }
 }

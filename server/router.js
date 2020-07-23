@@ -10,15 +10,23 @@ router.post('/adduser', (req, res, next) => {
   api.adduser(req, res, next);
 })
 
-router.post('/userlist',(req,res,next)=>{
-  api.userlist(req,res,next)
+router.post('/userlist', (req, res, next) => {
+  api.userlist(req, res, next)
 })
 
-router.get('/someDBselect',(req,res,next)=>{
-  api.someDBSelect(req,res,next);
+router.get('/someDBselect', (req, res, next) => {
+  api.someDBSelect(req, res, next);
 })
 
-router.get('/noSomeDBSelect',(req,res,next)=>{
-  api.noSomeDBSelect(req,res,next);
+router.post('/noSomeDBSelect', (req, res, next) => {
+  api.noSomeDBSelect(req, res, next);
+})
+
+router.delete('/delectUser', (req, res, next) => {
+  api.delectUser(req, res, next)
+})
+
+router.post('/outlogin',(req,res,next)=>{
+  api.outlogin(req, res, next)
 })
 module.exports = router;

@@ -1,31 +1,20 @@
 <style lang="less" scoped>
-.btn {
-  padding: 0 20px;
+/deep/.el-table th > .cell {
+  padding-left: 14px;
 }
 </style>
 
 <template>
   <div class="staff c_div c_flex">
-    <cform :FormData="FormData" :ruleForm="ruleForm" :Formname="Formname">
+    <cForm :FormData="FormData" :ruleForm="ruleForm" :Formname="Formname" ref="cform" :self="this">
       <template slot="footer" slot-scope="scope">
-        <el-form-item>
-          <el-button type="primary" @click="submitForm(scope.Formname)" size="small">查询</el-button>
-          <el-button @click="resetForm(scope.Formname)" size="small">重置</el-button>
-        </el-form-item>
+        <el-button type="primary" @click="submit(scope.Formname)" size="small">查询</el-button>
+        <el-button @click="reset(scope.Formname)" size="small">重置</el-button>
       </template>
-    </cform>
-    <div class="btn">
-      <!-- plain -->
-      <el-button
-        v-for="(item,index) in btn"
-        :key="index"
-        :size="$store.state.screenWidth"
-        :icon="item.icon"
-        :round="item.round"
-        :type="item.type"
-      >{{item.title}}</el-button>
-    </div>
-    <el-table :data="tableData" style="width: 100%">
+    </cForm>
+    <cbtn :btn="btn" @btnclick="handlebtnClick"></cbtn>
+    <el-table :data="tableData" @selection-change="handleSelectionChange" SSS ref="table">
+      <el-table-column type="selection"></el-table-column>
       <el-table-column
         v-for="(item,index) in tableHeader"
         :key="index"
@@ -37,56 +26,96 @@
 </template>
 
 <script>
-import cform from "../../component/cForm/index";
+import cForm from "../../component/cForm/index";
+import cbtn from "../../component/cbtn/index";
 export default {
-  component: { cform },
+  components: { cForm, cbtn },
   data() {
+    let disabled = true;
     return {
       FormData: [
         {
           style: "input",
           label: "用户名",
           prop: "userName",
-          plac: "请输入用户名"
-        }
+          plac: "请输入用户名",
+        },
       ],
       ruleForm: {
-        userName: ""
+        userName: "",
       },
       Formname: "Formname",
       btn: [
         {
           title: "新增人员",
           icon: "el-icon-plus",
-          type: "primary"
+          type: "primary",
+          call: () => {
+            this.add();
+          },
         },
         {
           title: "修改人员",
           icon: "el-icon-edit",
-          type: "warning"
+          type: "warning",
+          disabled: true,
+          call: () => {
+            this.edit();
+          },
         },
         {
           title: "删除人员",
           icon: "el-icon-delete",
-          type: "danger"
-        }
+          type: "danger",
+          disabled: true,
+          call: () => {
+            this.deleteuser();
+          },
+        },
       ],
       tableData: [],
       tableHeader: [
         {
+          prop: "id",
+          label: "userID",
+        },
+        {
           prop: "userName",
-          label: "用户名"
+          label: "用户名",
         },
         {
           prop: "email",
-          label: "邮箱"
-        }
-      ]
+          label: "邮箱",
+        },
+      ],
+      options: {
+        FormData: [
+          {
+            style: "input",
+            label: "用户名:",
+            prop: "userName",
+            plac: "请输入用户名",
+          },
+          {
+            style: "input",
+            label: "密码:",
+            prop: "passWord",
+            plac: "请输入密码",
+          },
+        ],
+        ruleForm: {
+          userName: "",
+          passWord: "",
+        },
+        Formname: "Formname",
+        ref: "cfrom",
+      },
+      selectArr: [],
     };
   },
   methods: {
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs["cform"].$refs[formName].validate((valid) => {
         if (valid) {
           this.getTableData();
         } else {
@@ -95,26 +124,62 @@ export default {
         }
       });
     },
-    reset(formname) {
-      console.log(this.$refs[formname]);
-      this.$refs[formname].resetFields();
+    reset(formName) {
+      this.$refs["cform"].$refs[formName].resetFields();
       this.getTableData();
+    },
+    handlebtnClick(item) {
+      item.call();
+    },
+    handleSelectionChange(val) {
+      this.selectArr = val;
+      if (val.length) {
+        this.btn[1].disabled = false;
+        this.btn[2].disabled = false;
+      } else {
+        this.btn[1].disabled = true;
+        this.btn[2].disabled = true;
+      }
+    },
+    add() {
+      this.$bus.emit(
+        "opendarwer",
+        this.options,
+        "新增人员页面",
+        this.$api.adduser
+      );
+    },
+    edit() {
+      let options = JSON.parse(JSON.stringify(this.options));
+      options.ruleForm = this.selectArr[0];
+      this.$bus.emit("opendarwer", options, "修改人员页面", this.$api.adduser);
+    },
+    deleteuser() {
+      this.$ajax
+        .delete(this.$api.delectUser, { params: { id: this.selectArr[0].id } })
+        .then((res) => {
+          if (res.success) {
+            this.getTableData();
+          }
+        });
     },
     getTableData() {
       this.$ajax
         .post(this.$api.userlist, { userName: this.ruleForm.userName })
-        .then(res => {
+        .then((res) => {
           this.tableData = res.result;
         });
-    }
+    },
   },
   created() {
     this.getTableData();
 
-    this.$ajax.get("/noSomeDBSelect").then(res => {
-      console.log(res);
-    });
+    this.$ajax
+      .post("/noSomeDBSelect", { pageNo: 1, pageSize: 10 })
+      .then((res) => {
+        console.log(res);
+      });
   },
-  mounted() {}
+  mounted() {},
 };
 </script>

@@ -8,6 +8,8 @@ import '@/assets/common.css'
 import ajax from '../tool/ajax'
 import api from '../tool/api'
 import tool from '../tool/tool'
+import bus from '../tool/bus'
+Vue.use(bus)
 NProgress.configure({
   easing: 'ease', // 动画方式    
   speed: 500, // 递增进度条的速度    
@@ -15,6 +17,7 @@ NProgress.configure({
   trickleSpeed: 200, // 自动递增间隔    
   minimum: 0.1 // 初始化时的最小百分比
 })
+Vue.config.devtools = true;
 Vue.config.productionTip = false;
 Vue.prototype.$ajax = ajax;
 Vue.prototype.$api = api;

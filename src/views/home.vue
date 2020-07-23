@@ -9,7 +9,7 @@
   height: calc(100vh - 40px) !important;
 }
 .main {
-  padding:0!important;
+  padding: 0 !important;
 }
 </style>
 
@@ -24,31 +24,33 @@
         </keep-alive>
       </el-main>
     </div>
+    <cDarwer></cDarwer>
   </div>
 </template>
 
 <script>
 import cSlider from "../component/slider/index";
 import cHeader from "../component/header/index";
+import cDarwer from "../component/drawer/index.vue";
 export default {
-  components: { cHeader, cSlider },
+  components: { cHeader, cSlider, cDarwer },
   data() {
     return {};
   },
   computed: {
     keep() {
       return this.$store.state.keepRouters;
-    }
+    },
   },
   watch: {
     $route: {
       handler(to, from) {
         this.$store.commit("setkeep", to.name);
-      }
+      },
     },
   },
   methods: {},
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>

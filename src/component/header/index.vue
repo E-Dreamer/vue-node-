@@ -78,7 +78,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <el-dropdown class="drop">
+      <el-dropdown class="drop" @command="dropdownclick1">
         <span class="el-dropdown-link">
           {{loginName}}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -104,21 +104,26 @@ export default {
       loginName: sessionStorage.getItem("username"),
       droparr: [
         {
-          title: "个人资料"
+          title: "个人资料",
+          call: () => {},
         },
         {
-          title: "修改资料"
+          title: "修改资料",
+          call: () => {},
         },
         {
-          title: "退出登录"
-        }
+          title: "退出登录",
+          call: () => {
+            this.out();
+          },
+        },
       ],
       belldrop: [
         {
           title: "消息通知",
-          path: "/msg"
-        }
-      ]
+          path: "/msg",
+        },
+      ],
     };
   },
   methods: {
@@ -132,9 +137,17 @@ export default {
       if (value.path) {
         this.$router.push(value.path);
       }
-    }
+    },
+    dropdownclick1(item) {
+      item.call();
+    },
+    out() {
+      this.$ajax.post(this.$api.outlogin).then((res) => {
+        console.log(res);
+      });
+    },
   },
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>

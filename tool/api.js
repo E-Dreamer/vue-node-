@@ -7,5 +7,7 @@
 export default {
     login:'/login',
     adduser:'/adduser',
-    userlist:'/userlist'
+    userlist:'/userlist',
+    delectUser:'/delectUser',
+    outlogin:'/outlogin'
 }

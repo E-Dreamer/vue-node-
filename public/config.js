@@ -1,5 +1,13 @@
 //自定义菜单配置 
-menuData = [{
+menuData = [
+  {
+    id:999,
+    icon:'el-icon-s-home',
+    title:'首页',
+    path:'index',
+    children:[]
+  },
+  {
   id: 1,
   icon: "el-icon-s-tools",
   title: "菜单管理",

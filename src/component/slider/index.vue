@@ -20,12 +20,11 @@
 .el-submenu__title {
   height: 40px !important;
   line-height: 40px !important;
-}
-.el-submenu__title {
   text-align: left;
 }
 .lastmenuitem {
   padding-left: 40px !important;
+  text-align: center;
 }
 </style>
 
@@ -96,6 +95,7 @@ export default {
         if (item.id == key) {
           this.active = item.id;
           this.toRouter(item.path);
+          this.$store.commit('setTag',item)
         } else if (item.children.length > 0) {
           this.showselect(item.children, key);
         }

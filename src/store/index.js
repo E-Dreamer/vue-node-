@@ -10,6 +10,14 @@ export default new Vuex.Store({
     submenu: [],
     keepRouters: [],
     screenWidth: "",
+    current: null,
+    tag: [{
+      children: [],
+      path: 'index',
+      title: '首页',
+      icon:'el-icon-s-home',
+      id: 999
+    }]
   },
   mutations: {
     setLoading(state, value) {
@@ -26,6 +34,19 @@ export default new Vuex.Store({
         state.keepRouters.push(value)
       }
       sessionStorage.setItem('keepRouter', state.keepRouters)
+    },
+    setTag(state, value) {
+      if (value.title == '首页') {
+        state.current = null;
+      } else {
+        state.current = value;
+        let result = state.tag.findIndex(item => item.title === value.title);
+        result === -1 ? state.tag.push(value) : '';
+      }
+    },
+    closeTag(state, value) {
+      let result = state.tag.findIndex(item => item.title === value.title)
+      state.tag.splice(result, 1)
     },
     ScreenWidth(state, width) {
       var Widthmap = new Map([

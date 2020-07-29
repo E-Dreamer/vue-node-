@@ -86,9 +86,9 @@ export default {
     // }
   },
   computed: {
-    active(){
-      return this.$store.getters.getactive
-    }
+    active() {
+      return this.$store.getters.getactive;
+    },
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -106,11 +106,10 @@ export default {
       });
     },
     toRouter(path) {
-      this.$router.push(path);
+      this.$router.push({ name: path });
     },
   },
-  created() {
-  },
+  created() {},
   mounted() {},
 };
 </script>

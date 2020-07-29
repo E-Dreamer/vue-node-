@@ -93,6 +93,13 @@ const jurisdicationMenu = [{
       requiresAuth: true,
     },
     component: () => import('../views/log/index.vue')
+  }, {
+    path: '/msg/:id',
+    name: 'msg',
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import('../views/msg/index.vue')
   }]
 }]
 

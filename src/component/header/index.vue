@@ -135,7 +135,7 @@ export default {
     },
     dropdownclick(value) {
       if (value.path) {
-        this.$router.push(value.path);
+        this.$router.push(value.path+'/2');
       }
     },
     dropdownclick1(item) {

@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     changeMenu(item) {
-      this.$router.push(item.path);
+      this.$router.push({name:item.path});
     },
     handleClose(item, index) {
       let length = this.tag.length - 1;

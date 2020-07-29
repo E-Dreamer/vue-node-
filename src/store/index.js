@@ -23,7 +23,6 @@ export default new Vuex.Store({
   },
   getters: {
     getactive(state) {
-      console.log('进来');
       return state.active
     }
   },
@@ -39,7 +38,6 @@ export default new Vuex.Store({
     },
     setactive(state, value) {
       state.active = value;
-      console.log('进来修改',state.active);
     },
     setkeep(state, value) {
       if (state.keepRouters.indexOf(value) == -1) {

@@ -46,7 +46,6 @@ export default {
   components: { cHeader, cSlider, cDarwer, cTag },
   data() {
     return {
-      drawer:false
     };
   },
   computed: {
@@ -57,6 +56,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        this.findmenuId(this.$store.state.submenu, to.name);
         this.$store.commit("setkeep", to.name);
       },
     },
@@ -71,18 +71,25 @@ export default {
         }
       });
     },
-    showconfig (){
-      this.drawer = true
+
+    findmenuId(data, name) {
+      data.forEach((item) => {
+        if (item.path == name) {
+          this.$store.commit("setactive", item.id);
+        } else if (item.children.length > 0) {
+          this.findmenuId(item.children, name);
+        }
+      });
     },
-    handleClose(){
-      this.drawer = false
-    }
   },
   created() {
+    this.$store.commit("setMenu", menuData);
     //这是刷新时候 进入的页面让他加入到缓存中 keep-alive
     this.$store.commit("setkeep", this.$route.name);
     // 这都是刷新时候 当前的页面的tag要显示
     this.findmenu(menuData);
+
+    this.findmenuId(this.$store.state.submenu, this.$route.name);
   },
   mounted() {},
 };

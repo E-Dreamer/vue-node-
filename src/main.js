@@ -24,7 +24,7 @@ Vue.prototype.$api = api;
 Vue.prototype.$tool = tool;
 
 router.beforeEach((to, form, next) => {
-  // if (!to.name) return router.push('/error')
+  if (!to.name) return router.push('/error')
   if (!to.meta.requiresAuth) return next() // 不需要验证的直接走
   let token = sessionStorage.getItem('token')
   if (token) {

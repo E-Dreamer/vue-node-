@@ -75,15 +75,19 @@
 export default {
   data() {
     return {
-      active: 2,
-      menuData: menuData
+      menuData: this.$store.state.submenu,
     };
   },
   watch: {
-    menuData: {
-      handle(newv, oldv) {
-        console.log(newv,oldv, "进来");
-      }
+    // menuData: {
+    //   handle(newv, oldv) {
+    //     console.log(newv,oldv, "进来");
+    //   }
+    // }
+  },
+  computed: {
+    active(){
+      return this.$store.getters.getactive
     }
   },
   methods: {
@@ -91,11 +95,11 @@ export default {
       this.showselect(this.menuData, key);
     },
     showselect(menu, key) {
-      menu.forEach(item => {
+      menu.forEach((item) => {
         if (item.id == key) {
           this.active = item.id;
           this.toRouter(item.path);
-          this.$store.commit('setTag',item)
+          this.$store.commit("setTag", item);
         } else if (item.children.length > 0) {
           this.showselect(item.children, key);
         }
@@ -103,11 +107,10 @@ export default {
     },
     toRouter(path) {
       this.$router.push(path);
-    }
+    },
   },
   created() {
-    this.$store.commit("setMenu", menuData);
   },
-  mounted() {}
+  mounted() {},
 };
 </script>

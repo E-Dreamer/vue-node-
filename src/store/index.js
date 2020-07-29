@@ -11,13 +11,21 @@ export default new Vuex.Store({
     keepRouters: [],
     screenWidth: "",
     current: null,
+
     tag: [{
       children: [],
       path: 'index',
       title: '首页',
-      icon:'el-icon-s-home',
+      icon: 'el-icon-s-home',
       id: 999
-    }]
+    }],
+    active: null,
+  },
+  getters: {
+    getactive(state) {
+      console.log('进来');
+      return state.active
+    }
   },
   mutations: {
     setLoading(state, value) {
@@ -28,6 +36,10 @@ export default new Vuex.Store({
     },
     setMenu(state, value) {
       state.submenu = value;
+    },
+    setactive(state, value) {
+      state.active = value;
+      console.log('进来修改',state.active);
     },
     setkeep(state, value) {
       if (state.keepRouters.indexOf(value) == -1) {

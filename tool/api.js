@@ -9,5 +9,7 @@ export default {
     adduser:'/adduser',
     userlist:'/userlist',
     delectUser:'/delectUser',
-    outlogin:'/outlogin'
+    outlogin:'/outlogin',
+    rolelist:'/rolelist',
+    addrole:'/addrole'
 }

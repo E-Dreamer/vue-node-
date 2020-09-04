@@ -58,7 +58,6 @@ axios.interceptors.request.use(config => {
 //响应拦截器
 axios.interceptors.response.use(response => {
   loadingInstance.close != undefined ? loadingInstance.close() : store.commit('setLoading', false) // 关闭loadings
-    // console.log(response);
   return response.data
 }, function (error) { // 对响应错误做点什么
   loadingInstance.close != undefined ? loadingInstance.close() : store.commit('setLoading', false) // 关闭loading//关闭loading

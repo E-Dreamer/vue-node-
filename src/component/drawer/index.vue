@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import md5 from 'md5'
+import md5 from "md5";
 import cform from "../cForm/index";
 export default {
   components: { cform },
@@ -79,11 +79,11 @@ export default {
     cancel(formName) {
       this.$refs[this.options.ref].$refs[formName].validate((valid) => {
         if (valid) {
-          if(this.title == '新增人员页面'){
-            this.ruleForm.passWord = md5(this.ruleForm.passWord)
+          if (this.title == "新增人员页面") {
+            this.ruleForm.passWord = md5(this.ruleForm.passWord);
           }
           this.$ajax.post(this.url, this.ruleForm).then((res) => {
-            console.log(res);
+            this.drawer = false;
           });
         } else {
           console.log("error submit!!");

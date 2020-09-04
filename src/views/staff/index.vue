@@ -13,13 +13,22 @@
       </template>
     </cForm>
     <cbtn :btn="btn" @btnclick="handlebtnClick"></cbtn>
-    <el-table :data="tableData" @selection-change="handleSelectionChange" SSS ref="table">
+    <el-table
+      :data="tableData"
+      @selection-change="handleSelectionChange"
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      ref="table"
+    >
       <el-table-column type="selection"></el-table-column>
       <el-table-column
         v-for="(item,index) in tableHeader"
         :key="index"
         :prop="item.prop"
         :label="item.label"
+        align='center'
       ></el-table-column>
     </el-table>
   </div>
@@ -31,7 +40,6 @@ import cbtn from "../../component/cbtn/index";
 export default {
   components: { cForm, cbtn },
   data() {
-    let disabled = true;
     return {
       FormData: [
         {
@@ -88,6 +96,7 @@ export default {
           label: "邮箱",
         },
       ],
+      loading: false,
       options: {
         FormData: [
           {
@@ -164,10 +173,15 @@ export default {
         });
     },
     getTableData() {
+      this.loading = true;
       this.$ajax
         .post(this.$api.userlist, { userName: this.ruleForm.userName })
         .then((res) => {
           this.tableData = res.result;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.loading = false;
         });
     },
   },

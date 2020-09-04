@@ -143,7 +143,7 @@ export default {
     },
     out() {
       this.$ajax.post(this.$api.outlogin).then((res) => {
-        console.log(res);
+        this.$router.push({path:'/login'})
       });
     },
   },

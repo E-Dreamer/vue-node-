@@ -2,6 +2,37 @@ const routerApi = require('./router');
 const bodyParser = require('body-parser'); // post 数据需要
 const express = require('express');
 const app = express();
+//swagger
+const expressSwagger = require('express-swagger-generator')(app)
+let options = {
+  swaggerDefinition: {
+    info: {
+      description: 'This is a sample server',
+      title: 'Swagger',
+      version: '1.0.0'
+    },
+    host: 'localhost:5000',
+    basePath: '/',
+    produces: ['application/json', 'application/xml'],
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: ''
+      }
+    }
+  },
+  route: {
+    url: '/swagger',
+    docs: '/swagger.json' //swagger文件 api
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./router/*.js'] //Path to the API handle folder
+}
+expressSwagger(options)
+
 //cookie-session是express的一个中间件,需要导入使用
 let cookieSession = require("cookie-session");
 let jwt = require("jsonwebtoken")
@@ -25,11 +56,11 @@ app.all("*", function (req, res, next) {
 //统一判断 除登录接口外的所有接口 如果没有token 返回500
 app.use(function (req, res, next) {
   let url = req.url;
-  if(url.indexOf('?') !== -1){
+  if (url.indexOf('?') !== -1) {
     url = url.substr(0, url.indexOf('?'))
   }
   let token = req.query.sysHttpTokenId || req.body.sysHttpTokenId || req.headers.sysHttpTokenId;
-  if (url !== '/login') {
+  if (url !== '/login' ) {
     jwt.verify(token, "azrael", (err, decode) => {
       if (err) {
         res.status(500);

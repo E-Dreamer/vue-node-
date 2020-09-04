@@ -26,7 +26,16 @@ router.delete('/delectUser', (req, res, next) => {
   api.delectUser(req, res, next)
 })
 
-router.post('/outlogin',(req,res,next)=>{
+router.post('/outlogin', (req, res, next) => {
   api.outlogin(req, res, next)
 })
+
+router.post('/addrole', (req, res, next) => {
+  api.addrole(req, res, next)
+})
+
+router.post('/rolelist', (req, res, next) => {
+  api.rolelist(req, res, next)
+})
+
 module.exports = router;

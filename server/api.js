@@ -21,8 +21,29 @@ const poolCluster = mysql.createPoolCluster({
 poolCluster.add('mysql', dbConfig.mysql);
 poolCluster.add('mysql1', dbConfig.mysql1);
 
+Date.prototype.format = function (format) {
+  var args = {
+    "M+": this.getMonth() + 1,
+    "d+": this.getDate(),
+    "h+": this.getHours(),
+    "m+": this.getMinutes(),
+    "s+": this.getSeconds(),
+    "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+    "S": this.getMilliseconds()
+  };
+  if (/(y+)/.test(format))
+    format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var i in args) {
+    var n = args[i];
+    if (new RegExp("(" + i + ")").test(format))
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length));
+  }
+  return format;
+};
+
+
+
 module.exports = {
-  // 登录
   login(req, res, next) {
     let userName = req.body.userName;
     let password = req.body.passWord;
@@ -206,6 +227,60 @@ module.exports = {
         })
       })
 
+    })
+  },
+
+  //查询角色 
+  rolelist(req, res, next) {
+    poolCluster.getConnection('mysql', (err, connection) => {
+      if (err) console.log('数据库链接失败');
+      let sql = sqlMap.rolelist;
+      if (req.body.roleName) {
+        sql += ' WHERE roleName =?'
+      }
+      connection.query(sql, req.body.roleName, (err, result) => {
+        if (err) {
+          res.status(500);
+          res.send({
+            msg: err.sqlMessage,
+            success: false
+          })
+        }
+        connection.release();
+        res.send({
+          msg: '查询成功',
+          success: true,
+          result: result
+        })
+      })
+    })
+  },
+  //新增角色
+  addrole(req, res, next) {
+    poolCluster.getConnection('mysql', (err, connection) => {
+      if (err) console.log('数据库链接失败');
+      let sql = sqlMap.addrole;
+      console.log(req.body);
+      let time = new Date().format("yyyy-MM-dd hh:mm:ss");
+      let obj = {
+        createTime: time
+      };
+      let params = Object.assign(req.body, obj)
+      connection.query(sql, params, (err, result) => {
+        if (err) {
+          res.status(500);
+          res.send({
+            msg: err.sqlMessage,
+            success: false
+          })
+        }
+        connection.release();
+        res.send({
+          msg: '新增成功',
+          success: true,
+          result: result
+        })
+      })
     })
   }
 }

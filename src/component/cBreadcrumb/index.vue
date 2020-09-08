@@ -13,9 +13,12 @@
 <template>
   <div class="cBreadcrumb">
     <el-breadcrumb separator="/">
-      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
-      <el-breadcrumb-item v-for="item in breadList" :key="item.path">{{
+      <!-- <el-breadcrumb-item v-for="item in breadList" :key="item.path">{{
         item.meta.title
+      }}</el-breadcrumb-item>
+    </el-breadcrumb> -->
+      <el-breadcrumb-item v-for="item in breadList" :key="item.path">{{
+        item.title
       }}</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
@@ -31,8 +34,9 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        this.getBreadcrumb();
-        // this.getBreadcrumbTwo();
+        // this.getBreadcrumb();
+        this.breadList = [];
+        this.getBreadcrumbTwo();
       }
     }
   },
@@ -49,15 +53,34 @@ export default {
         matched = [{ path: "/index", meta: { title: "首页" } }].concat(matched);
       }
       this.breadList = matched;
-    }
+    },
 
     // 下面我们通过拿到当前的路由信息 再根据保存的路由比较 获取
-    // getBreadcrumbTwo(){
-    //   console.log(this.$route);
-    // }
+    getBreadcrumbTwo() {
+      this.getrouter(this.$store.state.submenu);
+    },
+    getrouter(data) {
+      data.forEach((item, index) => {
+        if (item.path === this.$route.name) {
+          this.breadList.push(item);
+          return;
+        } else if (item.children.length) {
+          this.getrouter(item.children);
+        }
+      });
+
+      if (this.breadList.length) {
+        data.forEach(el => {
+          if (el.id === this.breadList[0].pid) {
+            this.breadList.unshift(el);
+          }
+        });
+      }
+    }
   },
   created() {
-    this.getBreadcrumb();
+    // this.getBreadcrumb();
+    this.getBreadcrumbTwo();
   },
   mounted() {}
 };

@@ -82,7 +82,7 @@ button {
   top: 0;
   width: 900px;
   height: 100%;
-  background-image: url("../assets/bg.jpg");
+  background-image: url("../assets/bg1.jpg");
   background-size: cover;
   transition: -webkit-transform 0.6s ease-in-out;
   transition: transform 0.6s ease-in-out;

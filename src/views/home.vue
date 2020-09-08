@@ -25,6 +25,7 @@
     <div class="content">
       <cSlider></cSlider>
       <el-main class="main">
+        <cBreadcrumb></cBreadcrumb>
         <cTag></cTag>
         <div class="rightcontent">
           <keep-alive :include="keep">
@@ -42,8 +43,9 @@ import cSlider from "../component/slider/index";
 import cHeader from "../component/header/index";
 import cDarwer from "../component/drawer/index";
 import cTag from "../component/ctag/index";
+import cBreadcrumb from '../component/cBreadcrumb'
 export default {
-  components: { cHeader, cSlider, cDarwer, cTag },
+  components: { cHeader, cSlider, cDarwer, cTag ,cBreadcrumb},
   data() {
     return {
     };

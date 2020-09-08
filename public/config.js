@@ -14,10 +14,12 @@ menuData = [
   path: '',
   children: [{
       id: 2,
+      pid:1,
       icon: " ",
       title: "用户管理",
       children: [{
           id: 7,
+          pid:2,
           icon: " ",
           title: "群组管理",
           path: 'group',
@@ -25,6 +27,7 @@ menuData = [
         },
         {
           id: 8,
+          pid:2,
           icon: " ",
           title: "部门管理",
           path: 'department',
@@ -32,6 +35,7 @@ menuData = [
         },
         {
           id: 9,
+          pid:2,
           icon: " ",
           title: "岗位管理",
           path: 'station',
@@ -39,6 +43,7 @@ menuData = [
         },
         {
           id: 10,
+          pid:2,
           icon: " ",
           title: "角色管理",
           path: 'role',
@@ -46,6 +51,7 @@ menuData = [
         },
         {
           id: 11,
+          pid:2,
           icon: " ",
           title: "人员管理",
           path: 'staff',
@@ -55,10 +61,12 @@ menuData = [
     },
     {
       id: 3,
+      pid:1,
       icon: " ",
       title: "系统配置",
       children: [{
           id: 4,
+          pid:3,
           icon: " ",
           title: "菜单配置",
           path: 'menu',
@@ -66,6 +74,7 @@ menuData = [
         },
         {
           id: 5,
+          pid:3,
           icon: " ",
           title: "字典配置",
           path: 'dict',
@@ -73,6 +82,7 @@ menuData = [
         },
         {
           id: 6,
+          pid:3,
           icon: " ",
           title: "日志管理",
           path: 'log',

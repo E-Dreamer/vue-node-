@@ -9,6 +9,8 @@ import ajax from '../tool/ajax'
 import api from '../tool/api'
 import tool from '../tool/tool'
 import bus from '../tool/bus'
+import Print from 'vue-print-nb'
+Vue.use(Print); //注册
 Vue.use(bus)
 NProgress.configure({
   easing: 'ease', // 动画方式    

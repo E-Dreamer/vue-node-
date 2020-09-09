@@ -19,6 +19,7 @@ module.exports = {
         }
       }
     },
+    port:5000,
     overlay: {
       warnings: false,
       errors: false

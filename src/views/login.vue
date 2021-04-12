@@ -348,9 +348,11 @@ export default {
     };
   },
   methods: {
+    // 这是登录和注册 效果切换
     imgclick() {
       document.querySelector(".dowebok").classList.toggle("s--signup");
     },
+    // 登录
     login() {
       let params = { userName: this.userName, passWord: md5(this.passWord) };
       this.$ajax.post(this.$api.login, params).then(res => {
@@ -362,6 +364,7 @@ export default {
         }
       });
     },
+    // 注册
     register() {
       let params = {
         userName: this.signusername,

@@ -1,3 +1,5 @@
+//修改文件 查看提交代码是否可行
+
 const path = require('path')
 
 function resolve(dir) {

@@ -6,4 +6,4 @@ var sqlMap = {
   addrole: 'INSERT INTO role SET ? ',
   rolelist: 'SELECT * FROM role '
 }
-module.exports = sqlMap;
+module.exports = sqlMap

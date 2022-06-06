@@ -29,3 +29,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 npm run node
 
 
+## swagger地址
+http://127.0.0.1:5120/swagger
+
